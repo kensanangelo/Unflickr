@@ -78,7 +78,13 @@ module.exports = {
 		saveImage();
 	},
 	like: function(req, res) {
-		res.send('The image:like POST controller');
+		Models.Image.findOne({ filename: {$regex: req.params.image_id}},
+			function(err, image){
+				image.likes++;
+				console.log(image.likes);
+				image.save();
+				res.render('image',{'image':image});
+			});
 	},
 	comment: function(req, res) {
 		res.send('The image:comment POST controller');
