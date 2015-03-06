@@ -5,7 +5,8 @@ var Models = require('../models');
 module.exports = {
 	index: function(req, res) {
 		var viewModel = {
-			image: {}
+			image: {},
+			comment: {}
 		};
 		//find the image using the url 
 		Models.Image.findOne({ filename: { $regex: req.params.image_id } },
@@ -16,6 +17,11 @@ module.exports = {
 					image.views++;
 					//saves the image to use as the view
 					viewModel.image = image;
+					Models.Comment.find({ imageID: { $regex: req.params.image_id } }, function(err, comments) {
+							viewModel.comment = comments;
+							console.log(comments);
+					});
+
 					//save the updated model
 					image.save();
 					res.render('image',viewModel);
@@ -81,12 +87,28 @@ module.exports = {
 		Models.Image.findOne({ filename: {$regex: req.params.image_id}},
 			function(err, image){
 				image.likes++;
+				image.views--;
 				console.log(image.likes);
 				image.save();
-				res.render('image',{'image':image});
+				res.redirect('/images/'+req.params.image_id);
 			});
 	},
 	comment: function(req, res) {
-		res.send('The image:comment POST controller');
+		//create a new comment
+		console.log(req.body.comment);
+		console.log(req.body.name);
+		console.log(req.body.email);
+		var newComment = new Models.Comment({
+			imageID: req.params.image_id,
+			comment: req.body.comment,
+			name: req.body.name,
+			email: req.body.email
+		});
+		console.log(newComment);
+		//saves the comment
+		newComment.save(function(err, comment) {
+			console.log('Successfully inserted comment');
+			res.redirect('/images/'+req.params.image_id);
+		});
 	}
 };
