@@ -45,8 +45,6 @@ module.exports = function(viewModel, callback) {
 			views: results[2],
 			likes: results[3]
 		};
-
-		console.log(viewModel);
 		//then we send our modified viewModel back to the controller after our functions are complete
 		callback(viewModel);
 	});

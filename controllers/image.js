@@ -1,7 +1,8 @@
-var fs = require('fs');
-var path = require('path');
-var Models = require('../models');
-var stats = require('../helpers/stats');
+var fs = require('fs'),
+	path = require('path'),
+	Models = require('../models'),
+	sidebar = require('../helpers/sidebar');
+
 //handles all requests for our image app
 module.exports = {
 	index: function(req, res) {
@@ -23,11 +24,12 @@ module.exports = {
 					//save the updated model
 					image.save();
 
+					//Checks for comments for the image
 					Models.Comment.find({ imageID: { $regex: req.params.image_id } }, function(err, comments) {
 						viewModel.comments = comments;
-						//console.log(comments);
 
-						stats(viewModel, function(viewModel) {
+						//Adds sidebar data and renders
+						sidebar(viewModel, function(viewModel) {
 							res.render('image',viewModel);
 						});
 
@@ -91,11 +93,12 @@ module.exports = {
 		saveImage();
 	},
 	like: function(req, res) {
+		//Picks out the image to add a like to
 		Models.Image.findOne({ filename: {$regex: req.params.image_id}},
 			function(err, image){
 				image.likes++;
+				//Takes away a view to counteract adding one on redirect
 				image.views--;
-				console.log(image.likes);
 				image.save();
 				res.redirect('/images/'+req.params.image_id);
 			});
@@ -108,7 +111,7 @@ module.exports = {
 			name: req.body.name,
 			email: req.body.email
 		});
-		//saves the comment
+		//saves the comment, and redirects user
 		newComment.save(function(err, comment) {
 			console.log('Successfully inserted comment');
 			res.redirect('/images/'+req.params.image_id);

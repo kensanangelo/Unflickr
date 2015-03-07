@@ -1,7 +1,6 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
-//*****Create and export the Comment Schema
 var CommentSchema = new Schema({
 	imageID: { type: String },
 	comment: { type: String },
