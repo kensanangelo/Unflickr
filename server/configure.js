@@ -27,7 +27,9 @@ module.exports = function(app) {
 	app.use(morgan('dev'));
 	//handles data and json
 	app.use(multer({ dest: './uploads/' }));
+	app.use(bodyParser.urlencoded({extended:true}));
 	app.use(bodyParser.json());
+
 	//handles older browsers that can't support REST
 	app.use(methodOverride());
 	//cookies
