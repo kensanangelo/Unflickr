@@ -29,12 +29,12 @@
                 <strong class="panel-title">Comments</strong>
             </div>
             <div class="col-md-4 text-right">
-                <button class="btn btn-default btn-sm" id="btn-comment" data-id="{{ image.uniqueId }}"><i class="fa fa-comments-o"> Post Comment...</i></button>
+                <button class="btn btn-success btn-sm" id="btn-comment" data-id="{{ image.uniqueId }}"><i class="fa fa-comments-o"> Post Comment...</i></button>
             </div>
         </div>
     </div>
     <div class="panel-body">
-        <blockquote id="post-comment">
+        <blockquote id="post-comment" class="hidden">
             <div class="row">
                 <form method="post" action="/images/{{ image.uniqueID }}/comment" enctype="application/x-www-form-urlencoded">
                     <div class="form-group col-sm-12">
