@@ -2,6 +2,7 @@ var path = require('path');
 var routes = require('./routes');
 var exphbs = require('express-handlebars');
 var express = require('express');
+var session = require('express-session');
 var bodyParser = require('body-parser');
 var multer = require('multer');
 var cookieParser = require('cookie-parser');
@@ -9,6 +10,8 @@ var morgan = require('morgan');
 var methodOverride = require('method-override');
 var errorHandler = require('errorhandler');
 var moment = require('moment');
+var passport = require('passport');
+var flash = require('connect-flash');
 
 module.exports = function(app) {
 	//sets up our server to deliver using handlebars
@@ -23,6 +26,15 @@ module.exports = function(app) {
 		}
 	}).engine);
 	app.set('view engine', 'handlebars');
+	//*****adds Passport to our middleware
+	//*****for express 4, we need to set all the defaults for session
+	app.use(session({ secret: '123', 
+	               saveUninitialized: true,
+	               resave: true }));
+	app.use(passport.initialize());
+	app.use(passport.session());
+	//adds Flash for displaying errors
+	app.use(flash());
 	//logs any request to the console
 	app.use(morgan('dev'));
 	//handles data and json
