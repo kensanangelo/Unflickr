@@ -105,17 +105,20 @@ module.exports = {
 			});
 	},
 	comment: function(req, res) {
-		//create a new comment
-		var newComment = new Models.Comment({
-			imageID: req.params.image_id,
-			comment: req.body.comment,
-			name: req.body.name,
-			email: req.body.email
-		});
-		//saves the comment, and redirects user
-		newComment.save(function(err, comment) {
-			console.log('Successfully inserted comment');
-			res.redirect('/images/'+req.params.image_id);
-		});
+		//Models.User.findOne({ username: {$regex: req.user}},
+			//function(err, image){
+				//create a new comment
+				var newComment = new Models.Comment({
+					imageID: req.params.image_id,
+					comment: req.body.comment,
+					name: req.user.username,
+					email: req.user.email
+				});
+				//saves the comment, and redirects user
+				newComment.save(function(err, comment) {
+					console.log('Successfully inserted comment');
+					res.redirect('/images/'+req.params.image_id);
+				});
+		//});
 	}
 };
