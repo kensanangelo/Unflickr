@@ -6,7 +6,8 @@ module.exports = {
 	index: function(req, res) {
 		var viewModel = {
 			images: {},
-			sidebar: {}
+			sidebar: {},
+			userName: req.user ? req.user.username : ''
 		};
 
 		imageModel.find(function(err, images) {

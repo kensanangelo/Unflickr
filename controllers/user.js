@@ -1,4 +1,6 @@
 var User = require('../models/user');
+var imageModel = require('../models').Image,
+	sidebar = require('../helpers/sidebar');
 var passport = require('passport');
 
 //takes an error from a Mongoose error object
@@ -24,9 +26,20 @@ var getErrorMessage = function(err) {
 };
 exports.renderSignin = function(req,res,next) {
 	if (!req.user) {
-		res.render('signin', {
+		var viewModel = {
+			images: {},
+			sidebar: {},
 			title: 'Sign-in',
 			error: req.flash('error') || req.flash('info')
+		};
+
+		imageModel.find(function(err, images) {
+			viewModel.images = images;
+			
+			//Adds sidebar data and renders
+			sidebar(viewModel, function(viewModel) {
+				res.render('signin',viewModel);
+			});
 		});
 	} else {
 		return res.redirect('/');
@@ -35,9 +48,20 @@ exports.renderSignin = function(req,res,next) {
 exports.renderSignup = function(req,res,next) {
 	//returns an error if the user can't be signed up
 	if (!req.user) {
-		res.render('signup', {
+		var viewModel = {
+			images: {},
+			sidebar: {},
 			title: 'Sign-up',
 			error: req.flash('error')
+		};
+
+		imageModel.find(function(err, images) {
+			viewModel.images = images;
+			
+			//Adds sidebar data and renders
+			sidebar(viewModel, function(viewModel) {
+				res.render('signup',viewModel);
+			});
 		});
 	} else {
 		return res.redirect('/');
