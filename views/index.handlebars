@@ -1,4 +1,5 @@
 <div class="panel panel-primary">
+	{{#if userName}}
 	<div class="panel-heading">
 		<h3 class="panel-title">
 			Upload an image
@@ -38,6 +39,7 @@
 		</form>
 	</div>
 	<div class="panel panel-default">
+		{{/if}}
 		<div class="panel-heading">
 			<h3 class="panel-title">
 				Newest Images
@@ -49,4 +51,6 @@
 				{{/each}}
 			</div>
 		</div>
-	</div>
+	{{#if userName}}
+		</div>
+	{{/if}}

@@ -9,7 +9,8 @@ module.exports = {
 		var viewModel = {
 			image: {},
 			comments: {},
-			sidebar: {}
+			sidebar: {},
+			userName: req.user ? req.user.username : ''
 		};
 		//find the image using the url 
 		Models.Image.findOne({ filename: { $regex: req.params.image_id } },

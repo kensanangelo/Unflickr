@@ -12,7 +12,11 @@
         <div class="row">
             <div class="col-md-8">
                 <form method="post" action="/images/{{ image.uniqueID }}/like" enctype="application/x-www-form-urlencoded">
-                    <button type="submit" class="btn btn-success" id="btn-like" data-id="{{ image.uniqueId }}"><i class="fa fa-heart"> Like</i></button>
+                    {{#if userName}}
+                        <button type="submit" class="btn btn-success" id="btn-like" data-id="{{ image.uniqueId }}"><i class="fa fa-heart"> Like</i></button>
+                    {{else}}
+                        <span>Likes: </span>
+                    {{/if}}
                     <strong class="likes-count">{{ image.likes }}</strong> &nbsp; - &nbsp; <i class="fa fa-eye"></i> <strong>{{ image.views }}</strong>
                     &nbsp; - &nbsp; Posted: <em class="text-muted">{{ timeago image.timestamp }}</em>
                 </form>
@@ -29,40 +33,46 @@
                 <strong class="panel-title">Comments</strong>
             </div>
             <div class="col-md-4 text-right">
-                <button class="btn btn-success btn-sm" id="btn-comment" data-id="{{ image.uniqueId }}"><i class="fa fa-comments-o"> Post Comment...</i></button>
+                {{#if userName}}
+                    <button class="btn btn-success btn-sm" id="btn-comment" data-id="{{ image.uniqueId }}"><i class="fa fa-comments-o"> Post Comment...</i></button>
+                {{else}}
+                    <span>Sign in to post a comment.</span>
+                {{/if}}
             </div>
         </div>
     </div>
     <div class="panel-body">
-        <blockquote id="post-comment" class="hidden">
-            <div class="row">
-                <form method="post" action="/images/{{ image.uniqueID }}/comment" enctype="application/x-www-form-urlencoded">
-                    <div class="form-group col-sm-12">
-                        <label class="col-sm-2 control-label" for="name">Name:</label>
-                        <div class="col-sm-10">
-                            <input class="form-control" type="text" name="name">
+        {{#if userName}}
+            <blockquote id="post-comment" class="hidden">
+                <div class="row">
+                    <form method="post" action="/images/{{ image.uniqueID }}/comment" enctype="application/x-www-form-urlencoded">
+                        <div class="form-group col-sm-12">
+                            <label class="col-sm-2 control-label" for="name">Name:</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" type="text" name="name">
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group col-sm-12">
-                        <label class="col-sm-2 control-label" for="email">Email:</label>
-                        <div class="col-sm-10">
-                            <input class="form-control" type="text" name="email">
+                        <div class="form-group col-sm-12">
+                            <label class="col-sm-2 control-label" for="email">Email:</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" type="text" name="email">
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group col-sm-12">
-                        <label class="col-sm-2 control-label" for="comment">Comment:</label>
-                        <div class="col-sm-10">
-                            <textarea class="form-control" name="comment" rows="2"></textarea>
+                        <div class="form-group col-sm-12">
+                            <label class="col-sm-2 control-label" for="comment">Comment:</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control" name="comment" rows="2"></textarea>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group col-sm-12">
-                        <div class="col-sm-12 text-right">
-                            <button type="submit" id="comment-btn" class="btn btn-success" type="button"><i class="fa fa-comment"></i> Post</button>
+                        <div class="form-group col-sm-12">
+                            <div class="col-sm-12 text-right">
+                                <button type="submit" id="comment-btn" class="btn btn-success" type="button"><i class="fa fa-comment"></i> Post</button>
+                            </div>
                         </div>
-                    </div>
-                </form>
-            </div>
-        </blockquote>
+                    </form>
+                </div>
+            </blockquote>
+        {{/if}}
         <ul class="media-list">
             {{#each comments}}
             <li class="media">
